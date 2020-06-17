@@ -14,6 +14,7 @@
     left: null,
     top: null
   };
+  var form = document.querySelector('.setup-wizard-form');
 
   setupOpenElement.addEventListener('click', function () {
     openPopup();
@@ -44,6 +45,9 @@
     // положение окна при открытии
     popupStartCoordinates.left = setupElement.offsetLeft;
     popupStartCoordinates.top = setupElement.offsetTop;
+
+    // отправка формы
+    form.addEventListener('submit', onFormSubmit);
   }
 
   function closePopup() {
@@ -61,6 +65,8 @@
     // возвращается изначальное положение окна, которое было при открытии
     setupElement.style.top = popupStartCoordinates.top + 'px';
     setupElement.style.left = popupStartCoordinates.left + 'px';
+
+    form.removeEventListener('submit', onFormSubmit);
   }
 
   function onPopupEscPress(evt) {
@@ -87,7 +93,7 @@
 
   function onSetupSubmitElementPressEnter(evt) {
     if (evt.key === 'Enter') {
-      document.querySelector('.setup-wizard-form').submit();
+      form.submit();
     }
   }
 
@@ -151,4 +157,25 @@
     }
   });
 
+  // обработчик и функции связанные с отправкой формы
+  function onFormSubmit(evt) {
+    evt.preventDefault();
+    window.backend.save(new FormData(form), onLoad, onError);
+  }
+
+  function onLoad() {
+    closePopup();
+  }
+
+  function onError(error) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+
+    node.textContent = error;
+    document.body.insertAdjacentElement('afterbegin', node);
+  }
 })();
