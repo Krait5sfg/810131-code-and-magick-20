@@ -1,38 +1,28 @@
 'use strict';
-// похожие персонажи в окне создания персонажа
-window.setup = (function () {
-  var MAX_SIMILAR_WIZARD_COUNT = 4;
+// загрузка и отрисовка похожих персонажей
+(function () {
 
-  var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
-  var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
-  var FIREBALLS_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 
-  var similarWizardTemplate = document.querySelector('#similar-wizard-template')
-    .content
-    .querySelector('.setup-similar-item');
-
-  var similarListElement = document.querySelector('.setup-similar-list');
+  var wizards = [];
+  var coatColor = 'rgb(101, 137, 164)';
+  var eyesColor = 'black';
 
   // загрузка магов с сервера
   window.backend.load(onLoad, onError);
 
-  function getElementWithWizard(template, wizard) {
-    var wizardTemplate = template.cloneNode(true);
-    wizardTemplate.querySelector('.setup-similar-label').textContent = wizard.name;
-    wizardTemplate.querySelector('.wizard-coat').style.fill = wizard.colorCoat;
-    wizardTemplate.querySelector('.wizard-eyes').style.fill = wizard.colorEyes;
-    return wizardTemplate;
-  }
+  window.customizationCharacter.wizard.onCoatChange = function (color) {
+    coatColor = color;
+    updateWizards();
+  };
 
-  function onLoad(wizards) {
-    var fragment = document.createDocumentFragment();
+  window.customizationCharacter.wizard.onEyesChange = function (color) {
+    eyesColor = color;
+    updateWizards();
+  };
 
-    for (var i = 0; i < MAX_SIMILAR_WIZARD_COUNT; i++) {
-      fragment.appendChild(getElementWithWizard(similarWizardTemplate, window.util.getRandomValueFromArray(wizards)));
-    }
-    similarListElement.appendChild(fragment);
-    document.querySelector('.setup-similar').classList.remove('hidden');
-
+  function onLoad(data) {
+    wizards = data;
+    updateWizards();
   }
 
   function onError(error) {
@@ -47,10 +37,35 @@ window.setup = (function () {
     document.body.insertAdjacentElement('afterbegin', node);
   }
 
-  return {
-    EYES_COLORS: EYES_COLORS,
-    COAT_COLORS: COAT_COLORS,
-    FIREBALLS_COLORS: FIREBALLS_COLORS,
-  };
+  function updateWizards() {
+    window.render.render(wizards.sort(function (left, right) {
+      var rankDiff = getRank(right) - getRank(left);
+      if (rankDiff === 0) {
+        rankDiff = namesComparator(left.name, right.name);
+      }
+      return rankDiff;
+    }));
+  }
+
+  function namesComparator(left, right) {
+    if (left > right) {
+      return 1;
+    } else if (left < right) {
+      return -1;
+    } else {
+      return 0;
+    }
+  }
+
+  function getRank(wizard) {
+    var rank = 0;
+    if (wizard.colorCoat === coatColor) {
+      rank += 2;
+    }
+    if (wizard.colorEyes === eyesColor) {
+      rank += 1;
+    }
+    return rank;
+  }
 })();
 

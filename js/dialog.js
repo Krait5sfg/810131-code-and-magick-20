@@ -38,7 +38,7 @@
     setupUserNameElement.addEventListener('blur', onInputBlur);
     setupCloseElement.addEventListener('keydown', onSetupCloseElementEnterPress);
     window.customizationCharacter.wizardCoatElement.addEventListener('click', window.customizationCharacter.onWizardCoatElementClick);
-    window.customizationCharacter.wizardEyesElement.addEventListener('click', window.customizationCharacter.onwizardEyesElementClick);
+    window.customizationCharacter.wizardEyesElement.addEventListener('click', window.customizationCharacter.onWizardEyesElementClick);
     window.customizationCharacter.setupFireballElement.addEventListener('click', window.customizationCharacter.onSetupFireballElementClick);
     setupSubmitElement.addEventListener('keydown', onSetupSubmitElementPressEnter);
 
@@ -58,7 +58,7 @@
     setupUserNameElement.removeEventListener('blur', onInputBlur);
     setupCloseElement.removeEventListener('keydown', onSetupCloseElementEnterPress);
     window.customizationCharacter.wizardCoatElement.removeEventListener('click', window.customizationCharacter.onWizardCoatElementClick);
-    window.customizationCharacter.wizardEyesElement.removeEventListener('click', window.customizationCharacter.onwizardEyesElementClick);
+    window.customizationCharacter.wizardEyesElement.removeEventListener('click', window.customizationCharacter.onWizardEyesElementClick);
     window.customizationCharacter.setupFireballElement.removeEventListener('click', window.customizationCharacter.onSetupFireballElementClick);
     setupSubmitElement.removeEventListener('keydown', onSetupSubmitElementPressEnter);
 
