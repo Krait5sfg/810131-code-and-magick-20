@@ -14,13 +14,11 @@ window.customizationCharacter = (function () {
     'rgb(241, 43, 107)'
   ];
   var EYES_COLORS = [
+    'black',
     'red',
-    'orange',
-    'yellow',
-    'green',
-    'lightblue',
     'blue',
-    'purple'
+    'yellow',
+    'green'
   ];
   var FIREBALLS_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 
