@@ -10,15 +10,15 @@
   // загрузка магов с сервера
   window.backend.load(onLoad, onError);
 
-  window.customizationCharacter.wizard.onCoatChange = function (color) {
+  window.customizationCharacter.wizard.onCoatChange = window.debounce.debounce(function (color) {
     coatColor = color;
     updateWizards();
-  };
+  });
 
-  window.customizationCharacter.wizard.onEyesChange = function (color) {
+  window.customizationCharacter.wizard.onEyesChange = window.debounce.debounce(function (color) {
     eyesColor = color;
     updateWizards();
-  };
+  });
 
   function onLoad(data) {
     wizards = data;
@@ -68,4 +68,3 @@
     return rank;
   }
 })();
-
